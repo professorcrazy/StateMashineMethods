@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class MoveToBehaviour : IState {
 
-    GameObject target;
+    GameObject targetObj = null;
+    Vector3 targetVec;
     NavMeshAgent navAgent;
     GameObject owner;
     float stoppingDistance;
@@ -14,17 +15,24 @@ public class MoveToBehaviour : IState {
 
 
 
-    public MoveToBehaviour(NavMeshAgent navAgent, GameObject owner, GameObject targetPos, float stoppingDistance, System.Action searchForNew) {
+    public MoveToBehaviour(NavMeshAgent navAgent, GameObject owner, TargetPos target, float stoppingDistance, System.Action searchForNew) {
         this.navAgent = navAgent;
         this.owner = owner;
-        this.target = targetPos;
+        this.targetObj = target.targetObj;
+        this.targetVec = target.targetVector;
         this.stoppingDistance = stoppingDistance;
         this.searchForNew = searchForNew;
     }
 
     public void Enter() {
         navAgent.isStopped = false;
-        this.navAgent.SetDestination(target.transform.position);
+        if (targetObj != null) {
+            this.navAgent.SetDestination(targetObj.transform.position);
+        }
+        if (targetVec != Vector3.zero) {
+            Debug.Log("target: " + targetVec);
+            this.navAgent.SetDestination(targetVec);
+        }
 
     }
 
@@ -33,7 +41,13 @@ public class MoveToBehaviour : IState {
             if (this.navAgent.remainingDistance < stoppingDistance) {
                 navAgent.isStopped = true;
                 hasReachedTarget = true;
-                target.SetActive(false);
+                if (targetObj != null) {
+                    targetObj.SetActive(false);
+                }
+                //if (targetVec != null) {
+                //    this.searchForNew();
+                //}
+
                 this.searchForNew();
             }
         }

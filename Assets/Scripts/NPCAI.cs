@@ -35,17 +35,21 @@ public class NPCAI : MonoBehaviour
 
         if (searchResult.closestObjWithTag != null) {
             //Move to state
-            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject,searchResult.closestObjWithTag, 1f, StartSearching));
+            TargetPos newSearchTarget = new TargetPos(searchResult.closestObjWithTag);
+            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, newSearchTarget, 1f, StartSearching));
         }
         else {
+            Debug.Log("Entered: Wander stage");
             //Wander state
-            npcStateMashine.ChangeState(new WanderBehaviour(this.gameObject, this.navAgent, this.wanderRadius, this.wanderTimer, MoveToPosition)
+            npcStateMashine.ChangeState(new WanderBehaviour(this.gameObject, this.navAgent, this.wanderRadius, this.wanderTimer, MoveToPosition));
         }
     }
 
-    void MoveToPosition(GameObject target) {
-        npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, target, 1f, StartSearching));
+    void MoveToPosition(TargetPos targetPos) {
 
+        if (targetPos.targetVector != null) {
+            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, targetPos, 1f, StartSearching));
+        }
     }
 
 }

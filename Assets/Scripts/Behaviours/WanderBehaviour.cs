@@ -9,16 +9,16 @@ public class WanderBehaviour : IState {
     GameObject owner;
     float wanderRadius;
     float wanderTimer;
-    System.Action setNewTargetPos;
+    System.Action<TargetPos> setNewTargetPosCallback;
 
     float timer = 0;
 
-    public WanderBehaviour(GameObject owner, NavMeshAgent navAgent, float wanderRadius, float wanderTimer, System.Action setNewTargetPos) {
+    public WanderBehaviour(GameObject owner, NavMeshAgent navAgent, float wanderRadius, float wanderTimer, System.Action<TargetPos> setNewTargetPosCallback) {
         this.owner = owner;
         this.navAgent = navAgent;
         this.wanderRadius = wanderRadius;
         this.wanderTimer = wanderTimer;
-        this.setNewTargetPos = setNewTargetPos;
+        this.setNewTargetPosCallback = setNewTargetPosCallback;
     }
 
     public void Enter() {
@@ -29,7 +29,10 @@ public class WanderBehaviour : IState {
         if (timer < Time.time) {
             timer = Time.time + wanderTimer;
             Vector3 newPos = RandomNavSphere(this.owner.transform.position, wanderRadius, -1);
-//            setNewTargetPos(newPos);
+            //            setNewTargetPos(newPos);
+            //Send Movetarget to the walking behaviour
+            TargetPos target = new TargetPos(newPos);
+            setNewTargetPosCallback(target);
         }
 
     }
@@ -48,5 +51,18 @@ public class WanderBehaviour : IState {
 
     public void Exit() {
 
+    }
+}
+
+public class TargetPos {
+    public GameObject targetObj = null;
+    public Vector3 targetVector;
+
+    public TargetPos(Vector3 targetVec) {
+        this.targetVector = targetVec;
+    }
+
+    public TargetPos(GameObject targetObj) {
+        this.targetObj = targetObj;
     }
 }

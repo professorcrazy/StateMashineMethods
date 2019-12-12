@@ -621,6 +621,8 @@ MonoBehaviour:
     m_Bits: 512
   viewRange: 50
   tagToLookFor: Food
+  wanderRadius: 25
+  wanderTimer: 0.5
 --- !u!1001 &806858094
 PrefabInstance:
   m_ObjectHideFlags: 0
