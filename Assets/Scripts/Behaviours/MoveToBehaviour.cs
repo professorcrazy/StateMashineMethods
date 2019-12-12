@@ -6,17 +6,18 @@ using UnityEngine.AI;
 public class MoveToBehaviour : IState {
 
     GameObject targetObj = null;
-    Vector3 targetVec;
+    Vector3? targetVec = null;
     NavMeshAgent navAgent;
     GameObject owner;
     float stoppingDistance;
     bool hasReachedTarget;
     private System.Action searchForNew;
+    Animator anim;
 
 
-
-    public MoveToBehaviour(NavMeshAgent navAgent, GameObject owner, TargetPos target, float stoppingDistance, System.Action searchForNew) {
+    public MoveToBehaviour(NavMeshAgent navAgent, GameObject owner, TargetPos target, float stoppingDistance, Animator anim, System.Action searchForNew) {
         this.navAgent = navAgent;
+        this.anim = anim;
         this.owner = owner;
         this.targetObj = target.targetObj;
         this.targetVec = target.targetVector;
@@ -29,14 +30,16 @@ public class MoveToBehaviour : IState {
         if (targetObj != null) {
             this.navAgent.SetDestination(targetObj.transform.position);
         }
-        if (targetVec != Vector3.zero) {
+        if (targetVec != null) {
             Debug.Log("target: " + targetVec);
-            this.navAgent.SetDestination(targetVec);
+        //    Vector3 tempVec = targetVec.Value; 
+            this.navAgent.SetDestination(targetVec.Value);
         }
 
     }
 
     public void Execute() {
+//        this.anim.SetFloat("Speed", Mathf.Abs(navAgent.velocity.magnitude));
         if (!hasReachedTarget) {
             if (this.navAgent.remainingDistance < stoppingDistance) {
                 navAgent.isStopped = true;

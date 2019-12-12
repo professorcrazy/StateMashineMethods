@@ -56,9 +56,9 @@ public class WanderBehaviour : IState {
 
 public class TargetPos {
     public GameObject targetObj = null;
-    public Vector3 targetVector;
+    public Vector3? targetVector = null;
 
-    public TargetPos(Vector3 targetVec) {
+    public TargetPos(Vector3? targetVec) {
         this.targetVector = targetVec;
     }
 

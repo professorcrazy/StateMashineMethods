@@ -16,14 +16,18 @@ public class NPCAI : MonoBehaviour
     [SerializeField] float wanderTimer;
 
     NavMeshAgent navAgent;
+    Animator anim;
 
     private void Start() {
+        anim = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         npcStateMashine.ChangeState(new SearchBehaviour(searchLayers, this.gameObject, this.viewRange, this.tagToLookFor, SearchResultFound));
     }
 
     private void Update() {
         npcStateMashine.ExecuteStateUpdate();
+        this.anim.SetFloat("Speed", Mathf.Abs(navAgent.velocity.magnitude));
+
     }
 
     void StartSearching() {
@@ -36,7 +40,7 @@ public class NPCAI : MonoBehaviour
         if (searchResult.closestObjWithTag != null) {
             //Move to state
             TargetPos newSearchTarget = new TargetPos(searchResult.closestObjWithTag);
-            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, newSearchTarget, 1f, StartSearching));
+            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, newSearchTarget, 1f, anim, StartSearching));
         }
         else {
             Debug.Log("Entered: Wander stage");
@@ -48,7 +52,7 @@ public class NPCAI : MonoBehaviour
     void MoveToPosition(TargetPos targetPos) {
 
         if (targetPos.targetVector != null) {
-            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, targetPos, 1f, StartSearching));
+            npcStateMashine.ChangeState(new MoveToBehaviour(this.navAgent, this.gameObject, targetPos, 1f, anim, StartSearching));
         }
     }
 

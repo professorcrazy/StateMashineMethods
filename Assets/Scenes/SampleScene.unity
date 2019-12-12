@@ -592,7 +592,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -622,7 +622,7 @@ MonoBehaviour:
   viewRange: 50
   tagToLookFor: Food
   wanderRadius: 25
-  wanderTimer: 0.5
+  wanderTimer: 1
 --- !u!1001 &806858094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -690,6 +690,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 0eb48b1c8cea890449d617e65b882cf9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5d634266a39362847959c58e3fdf0d58, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eb48b1c8cea890449d617e65b882cf9, type: 3}
 --- !u!1 &855358444
